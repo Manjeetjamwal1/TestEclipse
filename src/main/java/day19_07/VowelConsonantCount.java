@@ -1,4 +1,4 @@
-package day12_07;
+package day19_07;
 
 public class VowelConsonantCount {
     public static void main(String[] args) {
