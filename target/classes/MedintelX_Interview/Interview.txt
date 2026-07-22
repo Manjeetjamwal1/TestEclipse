@@ -2,3 +2,216 @@ Yes, sanity testing can be considered a subset of regression testing
 because both are performed after code changes. However, sanity testing
 focuses only on the changed functionality, whereas regression testing 
 verifies that the changes have not affected other existing functionalities.
+
+
+loctors used in playwright
+
+getByRole()
+getByLabel()
+getByPlaceholder()
+getByText()
+getByTestId()
+locator() (CSS/XPath when needed)
+
+
+
+Which method is used to launch a Chromium browser in Playwright?
+const { chromium } = require('@playwright/test');
+
+const browser = await chromium.launch();
+const page = await browser.newPage();
+
+await page.goto('https://example.com');
+
+
+
+Which Playwright method is used to capture a screenshot of the entire page?
+
+
+await page.screenshot({ fullPage: true });
+
+To capture only the visible viewport:
+
+await page.screenshot();
+
+To save the screenshot:
+
+await page.screenshot({
+  path: 'screenshots/homepage.png',
+  fullPage: true
+});
+
+
+Which Playwright method is used to switch to a newly opened tab (popup)?
+
+Interview Tip (Very Important)
+
+Q: How is Playwright different from Selenium for multiple windows?
+
+Selenium:
+
+driver.getWindowHandles();
+driver.switchTo().window(handle);
+
+Playwright:
+
+const newPage = await context.waitForEvent('page');
+
+There is no switchTo() in Playwright. Each tab is represented by its own Page object.
+
+Which method is used to upload a file in Playwright?
+How do you handle a JavaScript alert in Playwright?
+Playwright handles JavaScript dialogs (alert, confirm, prompt) using the dialog event.
+
+Accept an Alert
+page.on('dialog', async dialog => {
+  console.log(dialog.message());
+  await dialog.accept();
+});
+Dismiss a Confirm Dialog
+page.on('dialog', async dialog => {
+  await dialog.dismiss();
+});
+Enter Text in a Prompt
+page.on('dialog', async dialog => {
+  await dialog.accept('Manjeet');
+});
+Interview Tip ⭐ (Frequently Asked)
+
+Q: What types of JavaScript dialogs can Playwright handle?
+
+Answer:
+
+Explanation
+
+Playwright handles JavaScript dialogs (alert, confirm, prompt) using the dialog event.
+
+Accept an Alert
+page.on('dialog', async dialog => {
+  console.log(dialog.message());
+  await dialog.accept();
+});
+Dismiss a Confirm Dialog
+page.on('dialog', async dialog => {
+  await dialog.dismiss();
+});
+Enter Text in a Prompt
+page.on('dialog', async dialog => {
+  await dialog.accept('Manjeet');
+});
+
+
+
+
+Which method should you use to wait for an API/network response after clicking a button?
+
+page.waitForResponse() waits until a network response matching the given condition is received.
+
+Example:
+
+const responsePromise = page.waitForResponse(response =>
+  response.url().includes('/login') &&
+  response.status() === 200
+);
+
+await page.getByRole('button', { name: 'Login' }).click();
+
+const response = await responsePromise;
+
+
+Which Playwright feature allows you to reuse a logged-in session across multiple test runs?
+You need to execute JavaScript in the browser context. Which method should you use?
+Which Playwright feature is commonly used to run the same test with different browsers (Chromium, Firefox, and WebKit)?
+Which fixture is automatically provided by Playwright Test and represents the browser tab?
+Explanation
+
+The page fixture represents a single browser tab and is automatically provided by Playwright Test.
+
+Example:
+
+import { test, expect } from '@playwright/test';
+
+test('Login Test', async ({ page }) => {
+  await page.goto('https://example.com');
+  await expect(page).toHaveTitle(/Example/);
+});
+
+Here:
+
+browser → Browser instance (Chromium, Firefox, WebKit)
+context → Browser context (similar to an incognito session)
+page → A single browser tab
+locator → Used to locate elements on the page
+Interview Tip ⭐⭐⭐
+
+A very common interview question:
+
+Q: What is the difference between browser, context, and page?
+
+Object	Purpose
+browser	Launches the browser
+context	Creates an isolated browser session
+page	Represents a single browser tab
+
+Relationship:
+
+Browser
+   │
+   ├── Context 1
+   │      ├── Page 1
+   │      └── Page 2
+   │
+   └── Context 2
+          └── Page 3
+          
+          
+          
+Interview Tip ⭐⭐⭐
+
+Q: What is the difference between HTML Report and Trace Viewer?
+
+HTML Report	Trace Viewer
+Shows test summary	Shows step-by-step execution
+Pass/Fail status	DOM snapshots
+Screenshots	Network requests
+Videos	Console logs
+Basic debugging	Deep debugging ✅
+
+For debugging flaky tests, Trace Viewer is usually the best tool.    
+
+What is the recommended way to retry flaky tests in Playwright?    
+Explanation
+
+Playwright allows you to automatically retry failed tests by configuring the retries option.
+
+Example:
+
+import { defineConfig } from '@playwright/test';
+
+export default defineConfig({
+  retries: 2,
+});  
+Which method is used to intercept and mock a network request in Playwright?
+
+Q: Why do we mock APIs?
+
+Answer:
+
+✅ Test frontend without depending on the backend.
+✅ Simulate different server responses (200, 404, 500).
+✅ Faster test execution.
+✅ Stable and predictable tests.
+✅ Test edge cases that are difficult to reproduce.
+
+Which Playwright command runs only the tests marked with .only?
+Explanation
+
+test.only() is used to run only the marked test while skipping all other tests.
+
+Example:
+
+import { test } from '@playwright/test';
+
+test.only('Login Test', async ({ page }) => {
+  await page.goto('https://example.com');
+});
