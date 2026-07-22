@@ -1,1 +1,4 @@
-Yes, sanity testing can be considered a subset of regression testing because both are performed after code changes. However, sanity testing focuses only on the changed functionality, whereas regression testing verifies that the changes have not affected other existing functionalities."
+Yes, sanity testing can be considered a subset of regression testing
+because both are performed after code changes. However, sanity testing
+focuses only on the changed functionality, whereas regression testing 
+verifies that the changes have not affected other existing functionalities.
